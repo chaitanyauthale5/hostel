@@ -3,95 +3,94 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Student Hostel Management System Design System - Crazy Colors */
+/* Student Hostel Management System Design System - Elegant & Silent */
 
 @layer base {
   :root {
-    /* Core Brand Colors - Crazy Vibrant */
-    --background: 310 100% 95%;
-    --foreground: 260 100% 15%;
+    /* Core Brand Colors - Elegant & Silent */
+    --background: 220 15% 97%;
+    --foreground: 220 15% 15%;
 
-    --card: 330 100% 98%;
-    --card-foreground: 260 100% 15%;
+    --card: 220 15% 99%;
+    --card-foreground: 220 15% 15%;
 
-    --popover: 330 100% 98%;
-    --popover-foreground: 260 100% 15%;
+    --popover: 220 15% 99%;
+    --popover-foreground: 220 15% 15%;
 
-    /* Primary - Electric Purple */
-    --primary: 285 100% 60%;
+    /* Primary - Deep Blue */
+    --primary: 220 70% 50%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 285 100% 55%;
+    --primary-hover: 220 70% 45%;
 
-    /* Secondary - Neon Orange */
-    --secondary: 30 100% 60%;
+    /* Secondary - Warm Gray */
+    --secondary: 215 15% 65%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-hover: 30 100% 55%;
+    --secondary-hover: 215 15% 60%;
 
-    /* Status Colors - Crazy Vibrant */
-    --success: 150 100% 50%;
+    /* Status Colors - Subtle */
+    --success: 140 60% 45%;
     --success-foreground: 0 0% 100%;
-    --warning: 60 100% 50%;
+    --warning: 40 80% 55%;
     --warning-foreground: 0 0% 100%;
-    --danger: 0 100% 60%;
+    --danger: 0 70% 55%;
     --danger-foreground: 0 0% 100%;
 
-    --muted: 320 30% 90%;
-    --muted-foreground: 260 20% 40%;
+    --muted: 220 15% 92%;
+    --muted-foreground: 220 15% 45%;
 
-    --accent: 195 100% 85%;
-    --accent-foreground: 260 100% 15%;
+    --accent: 220 15% 88%;
+    --accent-foreground: 220 15% 25%;
 
-    --destructive: 0 100% 60%;
+    --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 300 50% 80%;
-    --input: 320 40% 92%;
-    --ring: 285 100% 60%;
+    --border: 220 15% 85%;
+    --input: 220 15% 94%;
+    --ring: 220 70% 50%;
 
-    /* Crazy Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(285 100% 60%), hsl(195 100% 60%));
-    --gradient-secondary: linear-gradient(135deg, hsl(30 100% 60%), hsl(340 100% 60%));
-    --gradient-dashboard: linear-gradient(135deg, hsl(310 100% 95%), hsl(195 50% 90%));
-    --gradient-crazy: linear-gradient(45deg, hsl(285 100% 60%), hsl(30 100% 60%), hsl(195 100% 60%), hsl(150 100% 50%));
+    /* Elegant Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(220 70% 50%), hsl(220 60% 40%));
+    --gradient-secondary: linear-gradient(135deg, hsl(215 15% 65%), hsl(210 20% 55%));
+    --gradient-dashboard: linear-gradient(135deg, hsl(220 15% 97%), hsl(215 20% 93%));
 
     /* Shadows */
-    --shadow-soft: 0 2px 8px hsl(285 100% 60% / 0.15);
-    --shadow-medium: 0 4px 16px hsl(285 100% 60% / 0.25);
-    --shadow-strong: 0 8px 32px hsl(285 100% 60% / 0.35);
+    --shadow-soft: 0 2px 8px hsl(220 15% 0% / 0.08);
+    --shadow-medium: 0 4px 16px hsl(220 15% 0% / 0.12);
+    --shadow-strong: 0 8px 32px hsl(220 15% 0% / 0.16);
 
     --radius: 0.75rem;
 
-    --sidebar-background: 285 100% 98%;
-    --sidebar-foreground: 260 100% 20%;
-    --sidebar-primary: 285 100% 60%;
+    --sidebar-background: 220 20% 98%;
+    --sidebar-foreground: 220 15% 25%;
+    --sidebar-primary: 220 70% 50%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 320 50% 95%;
-    --sidebar-accent-foreground: 260 100% 20%;
-    --sidebar-border: 300 50% 85%;
-    --sidebar-ring: 285 100% 60%;
+    --sidebar-accent: 220 15% 92%;
+    --sidebar-accent-foreground: 220 15% 25%;
+    --sidebar-border: 220 15% 88%;
+    --sidebar-ring: 220 70% 50%;
   }
 
   .dark {
-    --background: 260 30% 8%;
-    --foreground: 310 40% 98%;
+    --background: 220 15% 8%;
+    --foreground: 220 15% 92%;
 
-    --card: 260 30% 10%;
-    --card-foreground: 310 40% 98%;
+    --card: 220 15% 10%;
+    --card-foreground: 220 15% 92%;
 
-    --primary: 285 100% 70%;
-    --secondary: 30 100% 70%;
-    --success: 150 100% 60%;
-    --warning: 60 100% 70%;
-    --danger: 0 100% 70%;
+    --primary: 220 70% 60%;
+    --secondary: 215 15% 35%;
+    --success: 140 60% 55%;
+    --warning: 40 80% 65%;
+    --danger: 0 70% 65%;
 
-    --muted: 260 30% 15%;
-    --muted-foreground: 310 20% 60%;
+    --muted: 220 15% 15%;
+    --muted-foreground: 220 15% 55%;
 
-    --accent: 195 50% 20%;
-    --accent-foreground: 310 40% 98%;
+    --accent: 220 15% 20%;
+    --accent-foreground: 220 15% 85%;
 
-    --border: 260 30% 25%;
-    --input: 260 30% 20%;
+    --border: 220 15% 25%;
+    --input: 220 15% 20%;
   }
 }
 
@@ -105,15 +104,12 @@
   }
 }
 
-/* Custom Crazy Animations */
-@keyframes rainbow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* Elegant hover effects */
+.elegant-hover {
+  transition: all 0.2s ease-in-out;
 }
 
-.rainbow-bg {
-  background: var(--gradient-crazy);
-  background-size: 400% 400%;
-  animation: rainbow 3s ease infinite;
+.elegant-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-medium);
 }

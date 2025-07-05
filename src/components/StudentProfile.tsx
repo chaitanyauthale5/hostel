@@ -6,12 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { User, Phone, Mail, MapPin, Calendar, Edit, Save } from "lucide-react";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 interface StudentProfileProps {
   user: any;
 }
 
 const StudentProfile = ({ user }: StudentProfileProps) => {
+  const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
     name: user.name,
@@ -30,7 +32,10 @@ const StudentProfile = ({ user }: StudentProfileProps) => {
 
   const handleSave = () => {
     setIsEditing(false);
-    // Here you would typically save to backend
+    toast({
+      title: "Profile Updated",
+      description: "Your profile has been successfully updated.",
+    });
     console.log('Profile updated:', profile);
   };
 
@@ -38,14 +43,14 @@ const StudentProfile = ({ user }: StudentProfileProps) => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-primary">
             My Profile
           </h1>
           <p className="text-muted-foreground">Manage your personal information</p>
         </div>
         <Button
           onClick={isEditing ? handleSave : () => setIsEditing(true)}
-          className="rainbow-bg text-white hover:opacity-90"
+          className="bg-primary hover:bg-primary-hover text-white"
         >
           {isEditing ? <Save className="h-4 w-4 mr-2" /> : <Edit className="h-4 w-4 mr-2" />}
           {isEditing ? 'Save Changes' : 'Edit Profile'}
@@ -54,9 +59,9 @@ const StudentProfile = ({ user }: StudentProfileProps) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Picture & Basic Info */}
-        <Card className="lg:col-span-1 border-2 border-primary/20">
-          <CardHeader className="text-center bg-gradient-secondary rounded-t-lg">
-            <div className="mx-auto w-24 h-24 bg-gradient-primary rounded-full flex items-center justify-center mb-4">
+        <Card className="lg:col-span-1 border-2 border-primary/20 elegant-hover">
+          <CardHeader className="text-center bg-gradient-primary rounded-t-lg">
+            <div className="mx-auto w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-4">
               <User className="h-12 w-12 text-white" />
             </div>
             <CardTitle className="text-white">{profile.name}</CardTitle>
@@ -83,8 +88,8 @@ const StudentProfile = ({ user }: StudentProfileProps) => {
         </Card>
 
         {/* Detailed Information */}
-        <Card className="lg:col-span-2 border-2 border-secondary/20">
-          <CardHeader className="bg-gradient-primary rounded-t-lg">
+        <Card className="lg:col-span-2 border-2 border-secondary/20 elegant-hover">
+          <CardHeader className="bg-gradient-secondary rounded-t-lg">
             <CardTitle className="text-white">Personal Information</CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
@@ -149,7 +154,7 @@ const StudentProfile = ({ user }: StudentProfileProps) => {
         </Card>
 
         {/* Guardian Information */}
-        <Card className="lg:col-span-3 border-2 border-success/20">
+        <Card className="lg:col-span-3 border-2 border-success/20 elegant-hover">
           <CardHeader className="bg-gradient-secondary rounded-t-lg">
             <CardTitle className="text-white">Guardian & Emergency Contact</CardTitle>
           </CardHeader>

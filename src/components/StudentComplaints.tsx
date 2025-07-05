@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,14 +5,16 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MessageSquare, Plus, Clock, CheckCircle, AlertTriangle, Calendar, FileText } from "lucide-react";
+import { MessageSquare, Plus, Clock, CheckCircle, AlertTriangle, Calendar, FileText, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface StudentComplaintsProps {
   user: any;
 }
 
 const StudentComplaints = ({ user }: StudentComplaintsProps) => {
+  const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [complaint, setComplaint] = useState({
     title: '',
@@ -22,7 +23,7 @@ const StudentComplaints = ({ user }: StudentComplaintsProps) => {
     description: ''
   });
 
-  const complaints = [
+  const [complaints, setComplaints] = useState([
     {
       id: 1,
       title: 'AC not working in room',
@@ -56,7 +57,7 @@ const StudentComplaints = ({ user }: StudentComplaintsProps) => {
       response: null,
       responseDate: null
     }
-  ];
+  ]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -87,23 +88,43 @@ const StudentComplaints = ({ user }: StudentComplaintsProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('New complaint:', complaint);
+    const newComplaint = {
+      id: complaints.length + 1,
+      ...complaint,
+      status: 'pending',
+      date: new Date().toISOString().split('T')[0],
+      response: null,
+      responseDate: null
+    };
+    setComplaints([...complaints, newComplaint]);
     setComplaint({ title: '', category: '', priority: '', description: '' });
     setShowForm(false);
+    toast({
+      title: "Complaint Submitted",
+      description: "Your complaint has been submitted successfully.",
+    });
+  };
+
+  const handleDeleteComplaint = (id: number) => {
+    setComplaints(complaints.filter(comp => comp.id !== id));
+    toast({
+      title: "Complaint Deleted",
+      description: "The complaint has been removed.",
+    });
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-primary">
             My Complaints
           </h1>
           <p className="text-muted-foreground">Submit and track your hostel complaints</p>
         </div>
         <Button
           onClick={() => setShowForm(!showForm)}
-          className="rainbow-bg text-white hover:opacity-90"
+          className="bg-primary hover:bg-primary-hover text-white"
         >
           <Plus className="h-4 w-4 mr-2" />
           New Complaint
@@ -112,7 +133,7 @@ const StudentComplaints = ({ user }: StudentComplaintsProps) => {
 
       {/* Complaint Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="border-2 border-primary/20">
+        <Card className="border-2 border-primary/20 elegant-hover">
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
               <FileText className="h-8 w-8 text-primary" />
@@ -124,7 +145,7 @@ const StudentComplaints = ({ user }: StudentComplaintsProps) => {
           </CardContent>
         </Card>
         
-        <Card className="border-2 border-danger/20">
+        <Card className="border-2 border-danger/20 elegant-hover">
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
               <AlertTriangle className="h-8 w-8 text-danger" />
@@ -136,7 +157,7 @@ const StudentComplaints = ({ user }: StudentComplaintsProps) => {
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-warning/20">
+        <Card className="border-2 border-warning/20 elegant-hover">
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
               <Clock className="h-8 w-8 text-warning" />
@@ -148,7 +169,7 @@ const StudentComplaints = ({ user }: StudentComplaintsProps) => {
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-success/20">
+        <Card className="border-2 border-success/20 elegant-hover">
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
               <CheckCircle className="h-8 w-8 text-success" />
@@ -163,7 +184,7 @@ const StudentComplaints = ({ user }: StudentComplaintsProps) => {
 
       {/* New Complaint Form */}
       {showForm && (
-        <Card className="border-2 border-secondary/20">
+        <Card className="border-2 border-secondary/20 elegant-hover">
           <CardHeader className="bg-gradient-secondary rounded-t-lg">
             <CardTitle className="text-white">Submit New Complaint</CardTitle>
           </CardHeader>
@@ -229,7 +250,7 @@ const StudentComplaints = ({ user }: StudentComplaintsProps) => {
               </div>
 
               <div className="flex space-x-2">
-                <Button type="submit" className="rainbow-bg text-white hover:opacity-90">
+                <Button type="submit" className="bg-primary hover:bg-primary-hover text-white">
                   Submit Complaint
                 </Button>
                 <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
@@ -244,7 +265,7 @@ const StudentComplaints = ({ user }: StudentComplaintsProps) => {
       {/* Complaints List */}
       <div className="space-y-4">
         {complaints.map((comp) => (
-          <Card key={comp.id} className="border-2 border-primary/20">
+          <Card key={comp.id} className="border-2 border-primary/20 elegant-hover">
             <CardContent className="p-6">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-start space-x-4">
@@ -267,11 +288,21 @@ const StudentComplaints = ({ user }: StudentComplaintsProps) => {
                     </div>
                   </div>
                 </div>
-                <div className="text-right text-sm text-muted-foreground">
-                  <div className="flex items-center">
-                    <Calendar className="h-4 w-4 mr-1" />
-                    {comp.date}
+                <div className="flex items-center space-x-2">
+                  <div className="text-right text-sm text-muted-foreground">
+                    <div className="flex items-center">
+                      <Calendar className="h-4 w-4 mr-1" />
+                      {comp.date}
+                    </div>
                   </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleDeleteComplaint(comp.id)}
+                    className="border-danger text-danger hover:bg-danger/10"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </div>
               </div>
 

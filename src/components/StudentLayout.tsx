@@ -27,7 +27,7 @@ const StudentLayout = ({ user, onLogout }: StudentLayoutProps) => {
         "fixed inset-y-0 left-0 z-50 flex w-64 flex-col transition-transform duration-300 ease-in-out",
         sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
       )}>
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-card px-6 pb-4 shadow-strong rainbow-bg">
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-card px-6 pb-4 shadow-strong bg-gradient-primary">
           <div className="flex h-16 shrink-0 items-center">
             <div className="flex items-center space-x-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/20">
@@ -89,7 +89,7 @@ const StudentLayout = ({ user, onLogout }: StudentLayoutProps) => {
               <div className="hidden lg:block lg:h-6 lg:w-px lg:bg-border" />
               
               <div className="flex items-center space-x-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full rainbow-bg">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-primary">
                   <GraduationCap className="h-4 w-4 text-white" />
                 </div>
                 <div className="hidden lg:block">

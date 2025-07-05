@@ -3,12 +3,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CreditCard, Download, Calendar, IndianRupee, CheckCircle, Clock, AlertCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface StudentPaymentsProps {
   user: any;
 }
 
 const StudentPayments = ({ user }: StudentPaymentsProps) => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
   const payments = [
     {
       id: 1,
@@ -73,10 +78,38 @@ const StudentPayments = ({ user }: StudentPaymentsProps) => {
     }
   };
 
+  const handlePayNow = (payment: any) => {
+    toast({
+      title: "Payment Processing",
+      description: `Processing payment for ${payment.month}`,
+    });
+    // Simulate payment processing
+    setTimeout(() => {
+      toast({
+        title: "Payment Successful",
+        description: `Payment for ${payment.month} completed successfully!`,
+      });
+    }, 2000);
+  };
+
+  const handleDownloadReceipt = (payment: any) => {
+    toast({
+      title: "Downloading Receipt",
+      description: `Receipt for ${payment.month} is being downloaded.`,
+    });
+  };
+
+  const handleViewAllPayments = () => {
+    toast({
+      title: "All Payments",
+      description: "Displaying complete payment history.",
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold text-primary">
           Payment History
         </h1>
         <p className="text-muted-foreground">Track your hostel fee payments and dues</p>
@@ -84,7 +117,7 @@ const StudentPayments = ({ user }: StudentPaymentsProps) => {
 
       {/* Payment Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="border-2 border-success/20">
+        <Card className="border-2 border-success/20 elegant-hover">
           <CardHeader className="bg-gradient-to-r from-success to-success/80 rounded-t-lg">
             <CardTitle className="text-white flex items-center">
               <CheckCircle className="h-5 w-5 mr-2" />
@@ -99,7 +132,7 @@ const StudentPayments = ({ user }: StudentPaymentsProps) => {
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-danger/20">
+        <Card className="border-2 border-danger/20 elegant-hover">
           <CardHeader className="bg-gradient-to-r from-danger to-danger/80 rounded-t-lg">
             <CardTitle className="text-white flex items-center">
               <AlertCircle className="h-5 w-5 mr-2" />
@@ -114,7 +147,7 @@ const StudentPayments = ({ user }: StudentPaymentsProps) => {
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-primary/20">
+        <Card className="border-2 border-primary/20 elegant-hover">
           <CardHeader className="bg-gradient-primary rounded-t-lg">
             <CardTitle className="text-white flex items-center">
               <CreditCard className="h-5 w-5 mr-2" />
@@ -131,9 +164,19 @@ const StudentPayments = ({ user }: StudentPaymentsProps) => {
       </div>
 
       {/* Payment History */}
-      <Card className="border-2 border-secondary/20">
+      <Card className="border-2 border-secondary/20 elegant-hover">
         <CardHeader className="bg-gradient-secondary rounded-t-lg">
-          <CardTitle className="text-white">Payment Records</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-white">Payment Records</CardTitle>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleViewAllPayments}
+              className="border-white text-white hover:bg-white/10"
+            >
+              View All
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="pt-6">
           <div className="space-y-4">
@@ -170,13 +213,22 @@ const StudentPayments = ({ user }: StudentPaymentsProps) => {
                         <span className="ml-1 capitalize">{payment.status}</span>
                       </Badge>
                       {payment.status === 'paid' && (
-                        <Button size="sm" variant="outline" className="border-success text-success hover:bg-success/10">
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          onClick={() => handleDownloadReceipt(payment)}
+                          className="border-success text-success hover:bg-success/10"
+                        >
                           <Download className="h-4 w-4 mr-1" />
                           Receipt
                         </Button>
                       )}
                       {payment.status !== 'paid' && (
-                        <Button size="sm" className="rainbow-bg text-white hover:opacity-90">
+                        <Button 
+                          size="sm" 
+                          onClick={() => handlePayNow(payment)}
+                          className="bg-primary hover:bg-primary-hover text-white"
+                        >
                           Pay Now
                         </Button>
                       )}
