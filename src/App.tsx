@@ -10,6 +10,15 @@ import StudentLayout from "./components/StudentLayout";
 import AdminLayout from "./components/AdminLayout";
 import StudentDashboard from "./components/StudentDashboard";
 import AdminDashboard from "./components/AdminDashboard";
+import StudentProfile from "./components/StudentProfile";
+import StudentPayments from "./components/StudentPayments";
+import StudentComplaints from "./components/StudentComplaints";
+import AdminStudents from "./components/AdminStudents";
+import AdminRooms from "./components/AdminRooms";
+import AdminPayments from "./components/AdminPayments";
+import AdminComplaints from "./components/AdminComplaints";
+import AdminReports from "./components/AdminReports";
+import AdminSettings from "./components/AdminSettings";
 
 const queryClient = new QueryClient();
 
@@ -47,21 +56,21 @@ const App = () => {
               <Route path="/" element={<StudentLayout user={user} onLogout={handleLogout} />}>
                 <Route index element={<Navigate to="/student" replace />} />
                 <Route path="student" element={<StudentDashboard user={user} />} />
-                <Route path="student/profile" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Profile Management Coming Soon</h2></div>} />
-                <Route path="student/payments" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Payment History Coming Soon</h2></div>} />
-                <Route path="student/complaints" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Complaint System Coming Soon</h2></div>} />
+                <Route path="student/profile" element={<StudentProfile user={user} />} />
+                <Route path="student/payments" element={<StudentPayments user={user} />} />
+                <Route path="student/complaints" element={<StudentComplaints user={user} />} />
                 <Route path="*" element={<Navigate to="/student" replace />} />
               </Route>
             ) : (
               <Route path="/" element={<AdminLayout user={user} onLogout={handleLogout} />}>
                 <Route index element={<Navigate to="/admin" replace />} />
                 <Route path="admin" element={<AdminDashboard />} />
-                <Route path="admin/students" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Student Management Coming Soon</h2></div>} />
-                <Route path="admin/rooms" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Room Management Coming Soon</h2></div>} />
-                <Route path="admin/payments" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Payment Management Coming Soon</h2></div>} />
-                <Route path="admin/complaints" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Complaint Management Coming Soon</h2></div>} />
-                <Route path="admin/reports" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Reports Coming Soon</h2></div>} />
-                <Route path="admin/settings" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Settings Coming Soon</h2></div>} />
+                <Route path="admin/students" element={<AdminStudents />} />
+                <Route path="admin/rooms" element={<AdminRooms />} />
+                <Route path="admin/payments" element={<AdminPayments />} />
+                <Route path="admin/complaints" element={<AdminComplaints />} />
+                <Route path="admin/reports" element={<AdminReports />} />
+                <Route path="admin/settings" element={<AdminSettings />} />
                 <Route path="*" element={<Navigate to="/admin" replace />} />
               </Route>
             )}

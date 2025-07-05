@@ -1,8 +1,9 @@
 
-import { Building2, Home, CreditCard, MessageSquare, User, GraduationCap } from "lucide-react";
+import { Building2, Home, CreditCard, MessageSquare, User, GraduationCap, Menu } from "lucide-react";
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const navigation = [
   { name: 'Dashboard', href: '/student', icon: Home },
@@ -26,15 +27,15 @@ const StudentLayout = ({ user, onLogout }: StudentLayoutProps) => {
         "fixed inset-y-0 left-0 z-50 flex w-64 flex-col transition-transform duration-300 ease-in-out",
         sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
       )}>
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-card px-6 pb-4 shadow-strong">
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-card px-6 pb-4 shadow-strong rainbow-bg">
           <div className="flex h-16 shrink-0 items-center">
             <div className="flex items-center space-x-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-primary">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/20">
                 <Building2 className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-foreground">Student Portal</h1>
-                <p className="text-xs text-muted-foreground">Room {user.roomNumber}</p>
+                <h1 className="text-lg font-bold text-white">Student Portal</h1>
+                <p className="text-xs text-white/80">Room {user.roomNumber}</p>
               </div>
             </div>
           </div>
@@ -49,10 +50,10 @@ const StudentLayout = ({ user, onLogout }: StudentLayoutProps) => {
                         to={item.href}
                         className={({ isActive }) =>
                           cn(
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-all duration-200",
+                            "group flex gap-x-3 rounded-md p-3 text-sm leading-6 font-semibold transition-all duration-200",
                             isActive
-                              ? "bg-gradient-primary text-white shadow-medium"
-                              : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                              ? "bg-white/20 text-white shadow-medium backdrop-blur-sm"
+                              : "text-white/80 hover:text-white hover:bg-white/10"
                           )
                         }
                       >
@@ -72,16 +73,15 @@ const StudentLayout = ({ user, onLogout }: StudentLayoutProps) => {
       <div className="md:pl-64">
         {/* Top bar */}
         <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-border bg-card px-4 shadow-soft sm:gap-x-6 sm:px-6 lg:px-8">
-          <button
-            type="button"
-            className="-m-2.5 p-2.5 text-muted-foreground md:hidden"
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
             onClick={() => setSidebarOpen(!sidebarOpen)}
           >
-            <span className="sr-only">Open sidebar</span>
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-          </button>
+            <Menu className="h-6 w-6" />
+            <span className="sr-only">Toggle sidebar</span>
+          </Button>
 
           <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
             <div className="relative flex flex-1"></div>
@@ -89,7 +89,7 @@ const StudentLayout = ({ user, onLogout }: StudentLayoutProps) => {
               <div className="hidden lg:block lg:h-6 lg:w-px lg:bg-border" />
               
               <div className="flex items-center space-x-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-secondary">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full rainbow-bg">
                   <GraduationCap className="h-4 w-4 text-white" />
                 </div>
                 <div className="hidden lg:block">
@@ -98,7 +98,7 @@ const StudentLayout = ({ user, onLogout }: StudentLayoutProps) => {
                 </div>
                 <button
                   onClick={onLogout}
-                  className="text-sm text-muted-foreground hover:text-foreground"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Logout
                 </button>
@@ -115,7 +115,7 @@ const StudentLayout = ({ user, onLogout }: StudentLayoutProps) => {
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black bg-opacity-25 md:hidden"
+          className="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}

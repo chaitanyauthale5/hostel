@@ -3,122 +3,95 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Student Hostel Management System Design System */
+/* Student Hostel Management System Design System - Crazy Colors */
 
 @layer base {
   :root {
-    /* Core Brand Colors */
-    --background: 220 20% 97%;
-    --foreground: 215 25% 15%;
+    /* Core Brand Colors - Crazy Vibrant */
+    --background: 310 100% 95%;
+    --foreground: 260 100% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
+    --card: 330 100% 98%;
+    --card-foreground: 260 100% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 15%;
+    --popover: 330 100% 98%;
+    --popover-foreground: 260 100% 15%;
 
-    /* Primary - Educational Blue */
-    --primary: 210 100% 50%;
+    /* Primary - Electric Purple */
+    --primary: 285 100% 60%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 210 100% 45%;
+    --primary-hover: 285 100% 55%;
 
-    /* Secondary - Academic Orange */
-    --secondary: 25 95% 60%;
+    /* Secondary - Neon Orange */
+    --secondary: 30 100% 60%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-hover: 25 95% 55%;
+    --secondary-hover: 30 100% 55%;
 
-    /* Status Colors */
-    --success: 120 100% 35%;
+    /* Status Colors - Crazy Vibrant */
+    --success: 150 100% 50%;
     --success-foreground: 0 0% 100%;
-    --warning: 45 100% 55%;
+    --warning: 60 100% 50%;
     --warning-foreground: 0 0% 100%;
-    --danger: 0 85% 60%;
+    --danger: 0 100% 60%;
     --danger-foreground: 0 0% 100%;
 
-    --muted: 210 25% 95%;
-    --muted-foreground: 215 15% 50%;
+    --muted: 320 30% 90%;
+    --muted-foreground: 260 20% 40%;
 
-    --accent: 210 25% 95%;
-    --accent-foreground: 215 25% 15%;
+    --accent: 195 100% 85%;
+    --accent-foreground: 260 100% 15%;
 
-    --destructive: 0 85% 60%;
+    --destructive: 0 100% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 15% 88%;
-    --input: 215 15% 92%;
-    --ring: 210 100% 50%;
+    --border: 300 50% 80%;
+    --input: 320 40% 92%;
+    --ring: 285 100% 60%;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(210 100% 50%), hsl(210 100% 65%));
-    --gradient-secondary: linear-gradient(135deg, hsl(25 95% 60%), hsl(25 95% 75%));
-    --gradient-dashboard: linear-gradient(135deg, hsl(210 50% 98%), hsl(210 25% 95%));
+    /* Crazy Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(285 100% 60%), hsl(195 100% 60%));
+    --gradient-secondary: linear-gradient(135deg, hsl(30 100% 60%), hsl(340 100% 60%));
+    --gradient-dashboard: linear-gradient(135deg, hsl(310 100% 95%), hsl(195 50% 90%));
+    --gradient-crazy: linear-gradient(45deg, hsl(285 100% 60%), hsl(30 100% 60%), hsl(195 100% 60%), hsl(150 100% 50%));
 
     /* Shadows */
-    --shadow-soft: 0 2px 8px hsl(215 25% 15% / 0.08);
-    --shadow-medium: 0 4px 16px hsl(215 25% 15% / 0.12);
-    --shadow-strong: 0 8px 32px hsl(215 25% 15% / 0.16);
+    --shadow-soft: 0 2px 8px hsl(285 100% 60% / 0.15);
+    --shadow-medium: 0 4px 16px hsl(285 100% 60% / 0.25);
+    --shadow-strong: 0 8px 32px hsl(285 100% 60% / 0.35);
 
-    /* Transitions */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius: 0.75rem;
 
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-background: 285 100% 98%;
+    --sidebar-foreground: 260 100% 20%;
+    --sidebar-primary: 285 100% 60%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 320 50% 95%;
+    --sidebar-accent-foreground: 260 100% 20%;
+    --sidebar-border: 300 50% 85%;
+    --sidebar-ring: 285 100% 60%;
   }
 
   .dark {
-    --background: 215 25% 8%;
-    --foreground: 210 40% 98%;
+    --background: 260 30% 8%;
+    --foreground: 310 40% 98%;
 
-    --card: 215 25% 10%;
-    --card-foreground: 210 40% 98%;
+    --card: 260 30% 10%;
+    --card-foreground: 310 40% 98%;
 
-    --popover: 215 25% 10%;
-    --popover-foreground: 210 40% 98%;
+    --primary: 285 100% 70%;
+    --secondary: 30 100% 70%;
+    --success: 150 100% 60%;
+    --warning: 60 100% 70%;
+    --danger: 0 100% 70%;
 
-    --primary: 210 100% 60%;
-    --primary-foreground: 0 0% 100%;
-    --primary-hover: 210 100% 55%;
+    --muted: 260 30% 15%;
+    --muted-foreground: 310 20% 60%;
 
-    --secondary: 25 95% 65%;
-    --secondary-foreground: 0 0% 100%;
-    --secondary-hover: 25 95% 60%;
+    --accent: 195 50% 20%;
+    --accent-foreground: 310 40% 98%;
 
-    --success: 120 100% 40%;
-    --success-foreground: 0 0% 100%;
-    --warning: 45 100% 60%;
-    --warning-foreground: 0 0% 100%;
-    --danger: 0 85% 65%;
-    --danger-foreground: 0 0% 100%;
-
-    --muted: 215 25% 15%;
-    --muted-foreground: 210 15% 60%;
-
-    --accent: 215 25% 15%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 85% 65%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 215 25% 20%;
-    --input: 215 25% 20%;
-    --ring: 210 100% 60%;
-
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 260 30% 25%;
+    --input: 260 30% 20%;
   }
 }
 
@@ -130,4 +103,17 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Custom Crazy Animations */
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.rainbow-bg {
+  background: var(--gradient-crazy);
+  background-size: 400% 400%;
+  animation: rainbow 3s ease infinite;
 }
