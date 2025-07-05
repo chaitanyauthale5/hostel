@@ -1,8 +1,9 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Hostel Management System Design System */
+/* Student Hostel Management System Design System */
 
 @layer base {
   :root {
@@ -16,12 +17,12 @@
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 15%;
 
-    /* Primary - Professional Blue */
+    /* Primary - Educational Blue */
     --primary: 210 100% 50%;
     --primary-foreground: 0 0% 100%;
     --primary-hover: 210 100% 45%;
 
-    /* Secondary - Warm Hospitality Orange */
+    /* Secondary - Academic Orange */
     --secondary: 25 95% 60%;
     --secondary-foreground: 0 0% 100%;
     --secondary-hover: 25 95% 55%;
