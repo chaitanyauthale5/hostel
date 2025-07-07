@@ -3,6 +3,7 @@ import { IndianRupee, Home, CreditCard, MessageSquare, User, Calendar, Phone, Ma
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface StudentUser {
   id: string;
@@ -18,6 +19,7 @@ interface StudentDashboardProps {
 }
 
 const StudentDashboard = ({ user }: StudentDashboardProps) => {
+  const navigate = useNavigate();
   const currentMonth = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
 
   return (
@@ -114,7 +116,7 @@ const StudentDashboard = ({ user }: StudentDashboardProps) => {
               <p className="text-sm text-muted-foreground">+91 9876543210</p>
             </div>
           </div>
-          <Button variant="outline" className="mt-4">Edit Profile</Button>
+          
         </CardContent>
       </Card>
 
@@ -160,7 +162,12 @@ const StudentDashboard = ({ user }: StudentDashboardProps) => {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground mb-4">Next payment due: January 2025</p>
-            <Button className="w-full bg-gradient-primary">
+            <Button 
+              className="w-full bg-gradient-primary"
+              onClick={() => navigate('/student/qr-payment', { 
+                state: { amount: 8500, month: 'January 2025' }
+              })}
+            >
               <IndianRupee className="mr-2 h-4 w-4" />
               Pay ₹8,500
             </Button>
@@ -173,7 +180,11 @@ const StudentDashboard = ({ user }: StudentDashboardProps) => {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground mb-4">Report any issues or maintenance requests</p>
-            <Button variant="outline" className="w-full">
+            <Button 
+              variant="outline" 
+              className="w-full"
+              onClick={() => navigate('/student/complaints')}
+            >
               <MessageSquare className="mr-2 h-4 w-4" />
               New Complaint
             </Button>

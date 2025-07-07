@@ -5,10 +5,27 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { BarChart3, Download, Calendar, Users, IndianRupee, TrendingUp, PieChart, FileText } from "lucide-react";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const AdminReports = () => {
+  const { toast } = useToast();
   const [selectedMonth, setSelectedMonth] = useState('january-2024');
   const [reportType, setReportType] = useState('monthly');
+
+  const handleGenerateReport = (reportName: string) => {
+    toast({
+      title: "Report Generated",
+      description: `${reportName} has been generated and is ready for download.`,
+    });
+    
+    // Simulate download
+    setTimeout(() => {
+      const link = document.createElement('a');
+      link.href = '#';
+      link.download = `${reportName.toLowerCase().replace(' ', '_')}_${Date.now()}.pdf`;
+      link.click();
+    }, 1000);
+  };
   
   const monthlyStats = {
     totalRevenue: 142500,
@@ -256,19 +273,35 @@ const AdminReports = () => {
         </CardHeader>
         <CardContent className="pt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Button variant="outline" className="border-success text-success hover:bg-success/10 h-16 flex-col">
+            <Button 
+              variant="outline" 
+              className="border-success text-success hover:bg-success/10 h-16 flex-col"
+              onClick={() => handleGenerateReport('Revenue Report')}
+            >
               <IndianRupee className="h-6 w-6 mb-2" />
               Revenue Report
             </Button>
-            <Button variant="outline" className="border-primary text-primary hover:bg-primary/10 h-16 flex-col">
+            <Button 
+              variant="outline" 
+              className="border-primary text-primary hover:bg-primary/10 h-16 flex-col"
+              onClick={() => handleGenerateReport('Student Report')}
+            >
               <Users className="h-6 w-6 mb-2" />
               Student Report
             </Button>
-            <Button variant="outline" className="border-warning text-warning hover:bg-warning/10 h-16 flex-col">
+            <Button 
+              variant="outline" 
+              className="border-warning text-warning hover:bg-warning/10 h-16 flex-col"
+              onClick={() => handleGenerateReport('Occupancy Report')}
+            >
               <Calendar className="h-6 w-6 mb-2" />
               Occupancy Report
             </Button>
-            <Button variant="outline" className="border-secondary text-secondary hover:bg-secondary/10 h-16 flex-col">
+            <Button 
+              variant="outline" 
+              className="border-secondary text-secondary hover:bg-secondary/10 h-16 flex-col"
+              onClick={() => handleGenerateReport('Custom Report')}
+            >
               <FileText className="h-6 w-6 mb-2" />
               Custom Report
             </Button>

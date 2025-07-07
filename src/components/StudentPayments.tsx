@@ -226,7 +226,9 @@ const StudentPayments = ({ user }: StudentPaymentsProps) => {
                       {payment.status !== 'paid' && (
                         <Button 
                           size="sm" 
-                          onClick={() => handlePayNow(payment)}
+                          onClick={() => navigate('/student/qr-payment', { 
+                            state: { amount: payment.amount, month: payment.month }
+                          })}
                           className="bg-primary hover:bg-primary-hover text-white"
                         >
                           Pay Now
