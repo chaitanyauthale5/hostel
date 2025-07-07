@@ -1,5 +1,4 @@
-
-import { Building2, Users, BedDouble, IndianRupee, Settings, BarChart3, MessageSquare, FileText, UserCheck, Menu } from "lucide-react";
+import { Building2, Users, BedDouble, IndianRupee, Settings, BarChart3, MessageSquare, FileText, UserCheck, Menu, Shield } from "lucide-react";
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { cn } from "@/lib/utils";
