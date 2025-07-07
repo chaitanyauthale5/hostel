@@ -1,4 +1,4 @@
-import { Building2, Users, BedDouble, IndianRupee, Settings, BarChart3, MessageSquare, FileText, UserCheck, Menu, Shield, ChevronLeft, ChevronRight, LogOut } from "lucide-react";
+import { Building2, Users, BedDouble, IndianRupee, Settings, BarChart3, MessageSquare, FileText, UserCheck, Menu, Shield, ChevronLeft, ChevronRight, LogOut, QrCode } from "lucide-react";
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -11,6 +11,7 @@ const navigation = [
   { name: 'Payments', href: '/admin/payments', icon: IndianRupee },
   { name: 'Complaints', href: '/admin/complaints', icon: MessageSquare },
   { name: 'Reports', href: '/admin/reports', icon: FileText },
+  { name: 'QR Management', href: '/admin/qr-management', icon: QrCode },
   { name: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 

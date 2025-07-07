@@ -20,6 +20,7 @@ import AdminComplaints from "./components/AdminComplaints";
 import AdminReports from "./components/AdminReports";
 import AdminSettings from "./components/AdminSettings";
 import QRPayment from "./components/QRPayment";
+import AdminQRManagement from "./components/AdminQRManagement";
 
 const queryClient = new QueryClient();
 
@@ -72,6 +73,7 @@ const App = () => {
                 <Route path="admin/payments" element={<AdminPayments />} />
                 <Route path="admin/complaints" element={<AdminComplaints />} />
                 <Route path="admin/reports" element={<AdminReports />} />
+                <Route path="admin/qr-management" element={<AdminQRManagement />} />
                 <Route path="admin/settings" element={<AdminSettings />} />
                 <Route path="*" element={<Navigate to="/admin" replace />} />
               </Route>

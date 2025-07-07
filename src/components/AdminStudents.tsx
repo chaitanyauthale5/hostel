@@ -3,9 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Users, Search, Plus, Edit, Trash2, Eye, Phone, Mail, MapPin } from "lucide-react";
+import { Users, Search, Plus, Edit, Trash2, Eye, Phone, Mail, MapPin, X } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 const AdminStudents = () => {
   const { toast } = useToast();
@@ -13,6 +15,10 @@ const AdminStudents = () => {
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [showAddForm, setShowAddForm] = useState(false);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState<any>(null);
+  const [editingStudent, setEditingStudent] = useState<any>(null);
   
   const [students, setStudents] = useState([
     {
@@ -131,17 +137,28 @@ const AdminStudents = () => {
   };
 
   const handleEditStudent = (id: number) => {
+    const student = students.find(s => s.id === id);
+    if (student) {
+      setEditingStudent({...student});
+      setEditDialogOpen(true);
+    }
+  };
+
+  const handleSaveEdit = () => {
+    setStudents(students.map(s => s.id === editingStudent.id ? editingStudent : s));
+    setEditDialogOpen(false);
     toast({
-      title: "Edit Student",
-      description: `Editing student with ID: ${id}`,
+      title: "Student Updated",
+      description: "Student information has been updated successfully.",
     });
   };
 
   const handleViewStudent = (id: number) => {
-    toast({
-      title: "View Student",
-      description: `Viewing details for student ID: ${id}`,
-    });
+    const student = students.find(s => s.id === id);
+    if (student) {
+      setSelectedStudent(student);
+      setViewDialogOpen(true);
+    }
   };
 
   const handleDeleteStudent = (id: number) => {
@@ -439,6 +456,157 @@ const AdminStudents = () => {
           </Card>
         ))}
       </div>
+      
+      {/* View Student Dialog */}
+      <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center">
+              <Eye className="h-5 w-5 mr-2" />
+              Student Details
+            </DialogTitle>
+          </DialogHeader>
+          {selectedStudent && (
+            <div className="space-y-6 py-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-muted-foreground">Full Name</Label>
+                  <p className="text-sm font-medium">{selectedStudent.name}</p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-muted-foreground">Email</Label>
+                  <p className="text-sm">{selectedStudent.email}</p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-muted-foreground">Phone</Label>
+                  <p className="text-sm">{selectedStudent.phone}</p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-muted-foreground">Room Number</Label>
+                  <p className="text-sm">{selectedStudent.roomNumber}</p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-muted-foreground">Course</Label>
+                  <p className="text-sm">{selectedStudent.course}</p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-muted-foreground">Academic Year</Label>
+                  <p className="text-sm">{selectedStudent.year}</p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-muted-foreground">Fee Status</Label>
+                  <Badge className={getStatusColor(selectedStudent.feeStatus)}>
+                    {selectedStudent.feeStatus}
+                  </Badge>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-muted-foreground">Join Date</Label>
+                  <p className="text-sm">{selectedStudent.joinDate}</p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-muted-foreground">Guardian Name</Label>
+                  <p className="text-sm">{selectedStudent.guardianName}</p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-muted-foreground">Guardian Phone</Label>
+                  <p className="text-sm">{selectedStudent.guardianPhone}</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Student Dialog */}
+      <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center">
+              <Edit className="h-5 w-5 mr-2" />
+              Edit Student
+            </DialogTitle>
+          </DialogHeader>
+          {editingStudent && (
+            <div className="space-y-4 py-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="edit-name">Full Name</Label>
+                  <Input
+                    id="edit-name"
+                    value={editingStudent.name}
+                    onChange={(e) => setEditingStudent({...editingStudent, name: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-email">Email</Label>
+                  <Input
+                    id="edit-email"
+                    type="email"
+                    value={editingStudent.email}
+                    onChange={(e) => setEditingStudent({...editingStudent, email: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-phone">Phone</Label>
+                  <Input
+                    id="edit-phone"
+                    value={editingStudent.phone}
+                    onChange={(e) => setEditingStudent({...editingStudent, phone: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-room">Room Number</Label>
+                  <Input
+                    id="edit-room"
+                    value={editingStudent.roomNumber}
+                    onChange={(e) => setEditingStudent({...editingStudent, roomNumber: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-course">Course</Label>
+                  <Input
+                    id="edit-course"
+                    value={editingStudent.course}
+                    onChange={(e) => setEditingStudent({...editingStudent, course: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-year">Year</Label>
+                  <Input
+                    id="edit-year"
+                    value={editingStudent.year}
+                    onChange={(e) => setEditingStudent({...editingStudent, year: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-guardian">Guardian Name</Label>
+                  <Input
+                    id="edit-guardian"
+                    value={editingStudent.guardianName}
+                    onChange={(e) => setEditingStudent({...editingStudent, guardianName: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-guardian-phone">Guardian Phone</Label>
+                  <Input
+                    id="edit-guardian-phone"
+                    value={editingStudent.guardianPhone}
+                    onChange={(e) => setEditingStudent({...editingStudent, guardianPhone: e.target.value})}
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={() => setEditDialogOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleSaveEdit}>
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

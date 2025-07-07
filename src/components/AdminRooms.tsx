@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Home, Search, Plus, Edit, Wrench, Trash2, Users, Bed } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const AdminRooms = () => {
   const { toast } = useToast();
@@ -16,6 +17,8 @@ const AdminRooms = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [showAddForm, setShowAddForm] = useState(false);
   const [filterStatus, setFilterStatus] = useState('all');
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editingRoom, setEditingRoom] = useState<any>(null);
   
   const [rooms, setRooms] = useState([
     {
@@ -131,9 +134,19 @@ const AdminRooms = () => {
   };
 
   const handleEditRoom = (id: number) => {
+    const room = rooms.find(r => r.id === id);
+    if (room) {
+      setEditingRoom({...room});
+      setEditDialogOpen(true);
+    }
+  };
+
+  const handleSaveEdit = () => {
+    setRooms(rooms.map(r => r.id === editingRoom.id ? editingRoom : r));
+    setEditDialogOpen(false);
     toast({
-      title: "Edit Room",
-      description: `Editing room with ID: ${id}`,
+      title: "Room Updated",
+      description: "Room information has been updated successfully.",
     });
   };
 
@@ -445,6 +458,96 @@ const AdminRooms = () => {
           </Card>
         ))}
       </div>
+      
+      {/* Edit Room Dialog */}
+      <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center">
+              <Edit className="h-5 w-5 mr-2" />
+              Edit Room
+            </DialogTitle>
+          </DialogHeader>
+          {editingRoom && (
+            <div className="space-y-4 py-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="edit-roomNumber">Room Number</Label>
+                  <Input
+                    id="edit-roomNumber"
+                    value={editingRoom.roomNumber}
+                    onChange={(e) => setEditingRoom({...editingRoom, roomNumber: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-floor">Floor</Label>
+                  <Input
+                    id="edit-floor"
+                    value={editingRoom.floor}
+                    onChange={(e) => setEditingRoom({...editingRoom, floor: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-capacity">Capacity</Label>
+                  <Input
+                    id="edit-capacity"
+                    type="number"
+                    min="1"
+                    max="4"
+                    value={editingRoom.capacity}
+                    onChange={(e) => setEditingRoom({...editingRoom, capacity: parseInt(e.target.value)})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-type">Room Type</Label>
+                  <Select value={editingRoom.type} onValueChange={(value) => setEditingRoom({...editingRoom, type: value})}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Single">Single</SelectItem>
+                      <SelectItem value="Double">Double</SelectItem>
+                      <SelectItem value="Triple">Triple</SelectItem>
+                      <SelectItem value="Quad">Quad</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="edit-rent">Monthly Rent (₹)</Label>
+                  <Input
+                    id="edit-rent"
+                    type="number"
+                    value={editingRoom.rent}
+                    onChange={(e) => setEditingRoom({...editingRoom, rent: parseInt(e.target.value)})}
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="edit-status">Status</Label>
+                  <Select value={editingRoom.status} onValueChange={(value) => setEditingRoom({...editingRoom, status: value})}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="available">Available</SelectItem>
+                      <SelectItem value="occupied">Occupied</SelectItem>
+                      <SelectItem value="partially_occupied">Partially Occupied</SelectItem>
+                      <SelectItem value="maintenance">Maintenance</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={() => setEditDialogOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleSaveEdit}>
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
