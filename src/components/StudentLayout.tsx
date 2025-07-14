@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import StudentNotifications from "./StudentNotifications";
 
 const navigation = [
   { name: 'Dashboard', href: '/student', icon: Home },
@@ -20,6 +21,7 @@ interface StudentLayoutProps {
 const StudentLayout = ({ user, onLogout }: StudentLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -119,7 +121,12 @@ const StudentLayout = ({ user, onLogout }: StudentLayoutProps) => {
               <div className="hidden lg:block lg:h-6 lg:w-px lg:bg-border" />
               
               {/* Notification Icon */}
-              <Button variant="ghost" size="icon" className="relative">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="relative" 
+                onClick={() => setNotificationsOpen(true)}
+              >
                 <Bell className="h-5 w-5" />
                 <span className="absolute top-0 right-0 h-2 w-2 bg-danger rounded-full"></span>
               </Button>
@@ -165,6 +172,12 @@ const StudentLayout = ({ user, onLogout }: StudentLayoutProps) => {
           onClick={() => setSidebarOpen(false)}
         />
       )}
+
+      {/* Notifications Dialog */}
+      <StudentNotifications 
+        open={notificationsOpen} 
+        onOpenChange={setNotificationsOpen} 
+      />
     </div>
   );
 };

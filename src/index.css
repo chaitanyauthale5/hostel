@@ -22,10 +22,10 @@
     --primary-foreground: 0 0% 100%;
     --primary-hover: 220 70% 45%;
 
-    /* Secondary - Warm Gray */
-    --secondary: 215 15% 65%;
+    /* Secondary - Fresh Green */
+    --secondary: 140 60% 45%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-hover: 215 15% 60%;
+    --secondary-hover: 140 60% 40%;
 
     /* Status Colors - Subtle */
     --success: 140 60% 45%;
@@ -50,7 +50,7 @@
 
     /* Elegant Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(220 70% 50%), hsl(220 60% 40%));
-    --gradient-secondary: linear-gradient(135deg, hsl(215 15% 65%), hsl(210 20% 55%));
+    --gradient-secondary: linear-gradient(135deg, hsl(140 60% 45%), hsl(140 60% 35%));
     --gradient-dashboard: linear-gradient(135deg, hsl(220 15% 97%), hsl(215 20% 93%));
 
     /* Shadows */
@@ -78,7 +78,7 @@
     --card-foreground: 220 15% 92%;
 
     --primary: 220 70% 60%;
-    --secondary: 215 15% 35%;
+    --secondary: 140 60% 50%;
     --success: 140 60% 55%;
     --warning: 40 80% 65%;
     --danger: 0 70% 65%;

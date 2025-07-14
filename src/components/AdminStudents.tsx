@@ -32,7 +32,8 @@ const AdminStudents = () => {
       feeStatus: 'paid',
       joinDate: '2023-08-15',
       guardianName: 'Robert Smith',
-      guardianPhone: '+91 9876543211'
+      guardianPhone: '+91 9876543211',
+      permanentAddress: '123 Main Street, Downtown, New York, NY 10001'
     },
     {
       id: 2,
@@ -45,7 +46,8 @@ const AdminStudents = () => {
       feeStatus: 'pending',
       joinDate: '2023-08-20',
       guardianName: 'Raj Sharma',
-      guardianPhone: '+91 9876543213'
+      guardianPhone: '+91 9876543213',
+      permanentAddress: '456 Garden Lane, Sector 21, Mumbai, MH 400001'
     },
     {
       id: 3,
@@ -58,7 +60,8 @@ const AdminStudents = () => {
       feeStatus: 'overdue',
       joinDate: '2022-08-10',
       guardianName: 'Mohammed Khan',
-      guardianPhone: '+91 9876543215'
+      guardianPhone: '+91 9876543215',
+      permanentAddress: '789 Oak Street, Model Town, Delhi, DL 110001'
     },
     {
       id: 4,
@@ -71,7 +74,8 @@ const AdminStudents = () => {
       feeStatus: 'paid',
       joinDate: '2024-08-01',
       guardianName: 'Kishore Patel',
-      guardianPhone: '+91 9876543217'
+      guardianPhone: '+91 9876543217',
+      permanentAddress: '321 Rose Garden, Satellite, Ahmedabad, GJ 380001'
     }
   ]);
 
@@ -432,6 +436,10 @@ const AdminStudents = () => {
                 <div className="text-sm">
                   <p className="text-muted-foreground">Guardian: {student.guardianName}</p>
                   <p className="text-muted-foreground">Contact: {student.guardianPhone}</p>
+                  <div className="mt-2 p-2 bg-muted/30 rounded text-xs">
+                    <span className="text-muted-foreground">Address: </span>
+                    <span className="font-medium">{student.permanentAddress}</span>
+                  </div>
                 </div>
 
                 <div className="flex space-x-2 pt-2">
@@ -522,6 +530,10 @@ const AdminStudents = () => {
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-muted-foreground">Guardian Phone</Label>
                   <p className="text-sm">{selectedStudent.guardianPhone}</p>
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label className="text-sm font-medium text-muted-foreground">Permanent Address</Label>
+                  <p className="text-sm bg-muted/30 p-2 rounded">{selectedStudent.permanentAddress}</p>
                 </div>
               </div>
             </div>
