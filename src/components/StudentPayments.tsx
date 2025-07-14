@@ -2,9 +2,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CreditCard, Download, Calendar, IndianRupee, CheckCircle, Clock, AlertCircle } from "lucide-react";
+import { CreditCard, Download, Calendar, IndianRupee, CheckCircle, Clock, AlertCircle, Upload, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import StudentPaymentUpload from "./StudentPaymentUpload";
 
 interface StudentPaymentsProps {
   user: any;
@@ -13,6 +15,7 @@ interface StudentPaymentsProps {
 const StudentPayments = ({ user }: StudentPaymentsProps) => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
 
   const payments = [
     {
@@ -108,11 +111,20 @@ const StudentPayments = ({ user }: StudentPaymentsProps) => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-primary">
-          Payment History
-        </h1>
-        <p className="text-muted-foreground">Track your hostel fee payments and dues</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-primary">
+            Payment History
+          </h1>
+          <p className="text-muted-foreground">Track your hostel fee payments and dues</p>
+        </div>
+        <Button 
+          onClick={() => setUploadModalOpen(true)}
+          className="bg-primary hover:bg-primary-hover text-white"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Submit Payment
+        </Button>
       </div>
 
       {/* Payment Summary */}
@@ -248,6 +260,12 @@ const StudentPayments = ({ user }: StudentPaymentsProps) => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Payment Upload Modal */}
+      <StudentPaymentUpload 
+        open={uploadModalOpen} 
+        onClose={() => setUploadModalOpen(false)} 
+      />
     </div>
   );
 };

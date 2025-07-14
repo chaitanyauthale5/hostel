@@ -64,12 +64,27 @@ const AdminPayments = () => {
       roomNumber: 'A-102',
       month: 'January 2024',
       amount: 8500,
-      status: 'pending',
-      paymentDate: null,
+      status: 'pending_confirmation',
+      paymentDate: '2024-01-04',
       dueDate: '2024-01-05',
-      method: null,
-      transactionId: null,
-      lateFee: 0
+      method: 'UPI',
+      transactionId: 'UPI240104567890',
+      lateFee: 0,
+      submittedFor: 'admin_confirmation'
+    },
+    {
+      id: 5,
+      studentName: 'Rahul Verma',
+      roomNumber: 'B-203',
+      month: 'February 2024',
+      amount: 6500,
+      status: 'pending_confirmation',
+      paymentDate: '2024-02-02',
+      dueDate: '2024-02-05',
+      method: 'UPI',
+      transactionId: 'UPI240202345678',
+      lateFee: 0,
+      submittedFor: 'admin_confirmation'
     }
   ];
 
@@ -85,6 +100,7 @@ const AdminPayments = () => {
     switch (status) {
       case 'paid': return 'bg-success text-success-foreground';
       case 'pending': return 'bg-warning text-warning-foreground';
+      case 'pending_confirmation': return 'bg-primary text-primary-foreground';
       case 'overdue': return 'bg-danger text-danger-foreground';
       default: return 'bg-muted text-muted-foreground';
     }
@@ -262,7 +278,7 @@ const AdminPayments = () => {
                         Receipt
                       </Button>
                     )}
-                    {(payment.status === 'pending' || payment.status === 'overdue') && (
+                    {(payment.status === 'pending' || payment.status === 'overdue' || payment.status === 'pending_confirmation') && (
                       <Button 
                         size="sm" 
                         variant="outline" 
@@ -286,7 +302,7 @@ const AdminPayments = () => {
                 </div>
               </div>
               
-              {payment.status === 'paid' && (
+              {(payment.status === 'paid' || payment.status === 'pending_confirmation') && (
                 <div className="mt-4 pt-4 border-t border-border">
                   <div className="grid grid-cols-3 gap-4 text-sm">
                     <div>
@@ -302,6 +318,13 @@ const AdminPayments = () => {
                       <p className="font-medium">{payment.transactionId}</p>
                     </div>
                   </div>
+                  {payment.status === 'pending_confirmation' && (
+                    <div className="mt-2 p-2 bg-primary/10 rounded">
+                      <p className="text-sm text-primary font-medium">
+                        ⏳ Payment submitted by student - Awaiting admin confirmation
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
               
