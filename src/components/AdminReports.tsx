@@ -14,17 +14,98 @@ const AdminReports = () => {
 
   const handleGenerateReport = (reportName: string) => {
     toast({
-      title: "Report Generated",
-      description: `${reportName} has been generated and is ready for download.`,
+      title: "Generating Report",
+      description: `${reportName} is being generated...`,
     });
     
-    // Simulate download
+    // Simulate report generation and download
     setTimeout(() => {
-      const link = document.createElement('a');
-      link.href = '#';
-      link.download = `${reportName.toLowerCase().replace(' ', '_')}_${Date.now()}.pdf`;
-      link.click();
-    }, 1000);
+      // Create Excel-like data
+      const reportData = generateReportData(reportName);
+      downloadReport(reportData, reportName);
+      
+      toast({
+        title: "Report Downloaded",
+        description: `${reportName} has been successfully generated and downloaded.`,
+      });
+    }, 2000);
+  };
+
+  const generateReportData = (reportType: string) => {
+    switch (reportType) {
+      case 'Revenue Report':
+        return {
+          title: 'Sunshine Hostel - Revenue Report',
+          period: selectedMonth,
+          data: revenueData,
+          summary: {
+            totalRevenue: monthlyStats.totalRevenue,
+            averageRevenue: revenueData.reduce((sum, r) => sum + r.revenue, 0) / revenueData.length,
+            growth: '8.5%'
+          }
+        };
+      case 'Student Report':
+        return {
+          title: 'Sunshine Hostel - Student Report',
+          period: selectedMonth,
+          data: [
+            { metric: 'Total Students', value: monthlyStats.totalStudents },
+            { metric: 'New Admissions', value: monthlyStats.newAdmissions },
+            { metric: 'Occupancy Rate', value: `${monthlyStats.occupancyRate}%` }
+          ]
+        };
+      case 'Occupancy Report':
+        return {
+          title: 'Sunshine Hostel - Occupancy Report',
+          period: selectedMonth,
+          data: roomTypeRevenue.map(r => ({
+            roomType: r.type,
+            count: r.count,
+            occupancyRate: '85%'
+          }))
+        };
+      default:
+        return {
+          title: `Sunshine Hostel - ${reportType}`,
+          period: selectedMonth,
+          data: []
+        };
+    }
+  };
+
+  const downloadReport = (data: any, reportName: string) => {
+    // Create CSV content
+    const csvContent = createCSVContent(data);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${reportName.toLowerCase().replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+  };
+
+  const createCSVContent = (data: any) => {
+    let csv = `${data.title}\n`;
+    csv += `Generated on: ${new Date().toLocaleDateString()}\n`;
+    csv += `Period: ${data.period}\n\n`;
+    
+    if (data.summary) {
+      csv += 'SUMMARY\n';
+      Object.entries(data.summary).forEach(([key, value]) => {
+        csv += `${key},${value}\n`;
+      });
+      csv += '\n';
+    }
+    
+    csv += 'DETAILED DATA\n';
+    if (Array.isArray(data.data) && data.data.length > 0) {
+      const headers = Object.keys(data.data[0]);
+      csv += headers.join(',') + '\n';
+      data.data.forEach((row: any) => {
+        csv += headers.map(header => row[header] || '').join(',') + '\n';
+      });
+    }
+    
+    return csv;
   };
   
   const monthlyStats = {
@@ -204,27 +285,27 @@ const AdminReports = () => {
           </CardContent>
         </Card>
 
-        {/* Student Distribution */}
+        {/* Fee Collection Breakdown */}
         <Card className="border-2 border-success/20">
           <CardHeader className="bg-gradient-to-r from-success to-success/80 rounded-t-lg">
             <CardTitle className="text-white flex items-center">
-              <Users className="h-5 w-5 mr-2" />
-              Students by Department
+              <IndianRupee className="h-5 w-5 mr-2" />
+              Monthly Fee Breakdown
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
             <div className="space-y-3">
-              {studentsByDepartment.map((dept, index) => (
+              {roomTypeRevenue.map((room, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-medium">{dept.department}</span>
-                      <span className="text-sm text-muted-foreground">{dept.count} students</span>
+                      <span className="text-sm font-medium">{room.type}</span>
+                      <span className="text-sm text-muted-foreground">₹{room.revenue.toLocaleString()}</span>
                     </div>
                     <div className="w-full bg-muted rounded-full h-2">
                       <div 
                         className="bg-gradient-primary h-2 rounded-full" 
-                        style={{ width: `${dept.percentage}%` }}
+                        style={{ width: `${(room.revenue / monthlyStats.totalRevenue) * 100}%` }}
                       ></div>
                     </div>
                   </div>

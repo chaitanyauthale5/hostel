@@ -9,6 +9,7 @@ import { Home, Search, Plus, Edit, Wrench, Trash2, Users, Bed } from "lucide-rea
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import RoomDetailsModal from "./RoomDetailsModal";
 
 const AdminRooms = () => {
   const { toast } = useToast();
@@ -19,16 +20,18 @@ const AdminRooms = () => {
   const [filterStatus, setFilterStatus] = useState('all');
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editingRoom, setEditingRoom] = useState<any>(null);
+  const [roomDetailsOpen, setRoomDetailsOpen] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState<any>(null);
   
   // Students data for selection
   const [students] = useState([
-    { id: 1, name: 'John Smith', email: 'john.smith@email.com', roomNumber: 'A-101' },
-    { id: 2, name: 'Mike Johnson', email: 'mike.johnson@email.com', roomNumber: 'A-101' },
-    { id: 3, name: 'Priya Sharma', email: 'priya.sharma@email.com', roomNumber: 'B-201' },
-    { id: 4, name: 'Ahmed Khan', email: 'ahmed.khan@email.com', roomNumber: null },
-    { id: 5, name: 'Sneha Patel', email: 'sneha.patel@email.com', roomNumber: null },
-    { id: 6, name: 'Raj Kumar', email: 'raj.kumar@email.com', roomNumber: null },
-    { id: 7, name: 'Lisa Wong', email: 'lisa.wong@email.com', roomNumber: null }
+    { id: 1, name: 'John Smith', email: 'john.smith@email.com', phone: '+91 9876543210', course: 'Computer Science', year: '3rd Year', feeStatus: 'paid', roomNumber: 'A-101', permanentAddress: '123 Main St, Delhi, India' },
+    { id: 2, name: 'Mike Johnson', email: 'mike.johnson@email.com', phone: '+91 9876543211', course: 'Mechanical Engineering', year: '2nd Year', feeStatus: 'pending', roomNumber: 'A-101', permanentAddress: '456 Oak Ave, Mumbai, India' },
+    { id: 3, name: 'Priya Sharma', email: 'priya.sharma@email.com', phone: '+91 9876543212', course: 'Electrical Engineering', year: '4th Year', feeStatus: 'paid', roomNumber: 'B-201', permanentAddress: '789 Pine Rd, Bangalore, India' },
+    { id: 4, name: 'Ahmed Khan', email: 'ahmed.khan@email.com', phone: '+91 9876543213', course: 'Civil Engineering', year: '1st Year', feeStatus: 'overdue', roomNumber: null, permanentAddress: '321 Elm St, Chennai, India' },
+    { id: 5, name: 'Sneha Patel', email: 'sneha.patel@email.com', phone: '+91 9876543214', course: 'Chemical Engineering', year: '2nd Year', feeStatus: 'paid', roomNumber: null, permanentAddress: '654 Maple Dr, Pune, India' },
+    { id: 6, name: 'Raj Kumar', email: 'raj.kumar@email.com', phone: '+91 9876543215', course: 'IT Engineering', year: '3rd Year', feeStatus: 'pending', roomNumber: null, permanentAddress: '987 Cedar Ln, Hyderabad, India' },
+    { id: 7, name: 'Lisa Wong', email: 'lisa.wong@email.com', phone: '+91 9876543216', course: 'Electronics Engineering', year: '1st Year', feeStatus: 'paid', roomNumber: null, permanentAddress: '147 Birch Way, Kolkata, India' }
   ]);
   
   const [rooms, setRooms] = useState([
@@ -179,6 +182,12 @@ const AdminRooms = () => {
       title: "Room Deleted",
       description: "Room has been removed from the system.",
     });
+  };
+
+  const handleRoomClick = (room: any) => {
+    const roomStudents = students.filter(s => s.roomNumber === room.roomNumber);
+    setSelectedRoom({ ...room, studentsData: roomStudents });
+    setRoomDetailsOpen(true);
   };
 
   const totalRooms = rooms.length;
@@ -385,7 +394,12 @@ const AdminRooms = () => {
           <Card key={room.id} className="border-2 border-primary/20 elegant-hover">
             <CardHeader className="bg-gradient-primary rounded-t-lg">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-white">{room.roomNumber}</CardTitle>
+                <CardTitle 
+                  className="text-white cursor-pointer hover:text-white/80 transition-colors"
+                  onClick={() => handleRoomClick(room)}
+                >
+                  {room.roomNumber}
+                </CardTitle>
                 <Badge className={getStatusColor(room.status)}>
                   {room.status.replace('_', ' ')}
                 </Badge>
@@ -612,6 +626,14 @@ const AdminRooms = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Room Details Modal */}
+      <RoomDetailsModal 
+        open={roomDetailsOpen}
+        onClose={() => setRoomDetailsOpen(false)}
+        roomNumber={selectedRoom?.roomNumber || ''}
+        students={selectedRoom?.studentsData || []}
+      />
     </div>
   );
 };

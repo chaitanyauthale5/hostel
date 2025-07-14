@@ -83,7 +83,8 @@ const AdminStudents = () => {
     course: '',
     year: '',
     guardianName: '',
-    guardianPhone: ''
+    guardianPhone: '',
+    permanentAddress: ''
   });
 
   const filteredStudents = students
@@ -127,7 +128,7 @@ const AdminStudents = () => {
     };
     setStudents([...students, student]);
     setNewStudent({
-      name: '', email: '', phone: '', roomNumber: '', course: '', year: '', guardianName: '', guardianPhone: ''
+      name: '', email: '', phone: '', roomNumber: '', course: '', year: '', guardianName: '', guardianPhone: '', permanentAddress: ''
     });
     setShowAddForm(false);
     toast({
@@ -359,12 +360,23 @@ const AdminStudents = () => {
                     required
                   />
                 </div>
-                <div className="space-y-2">
+                  <div className="space-y-2">
                   <Label htmlFor="guardianPhone">Guardian Phone</Label>
                   <Input
                     id="guardianPhone"
                     value={newStudent.guardianPhone}
                     onChange={(e) => setNewStudent({...newStudent, guardianPhone: e.target.value})}
+                    required
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="permanentAddress">Permanent Address</Label>
+                  <Textarea
+                    id="permanentAddress"
+                    value={newStudent.permanentAddress}
+                    onChange={(e) => setNewStudent({...newStudent, permanentAddress: e.target.value})}
+                    placeholder="Enter permanent address..."
+                    rows={2}
                     required
                   />
                 </div>

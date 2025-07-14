@@ -3,16 +3,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { IndianRupee, Search, Download, Eye, Calendar, TrendingUp, Users, CreditCard } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { IndianRupee, Search, Download, Eye, Calendar, TrendingUp, Users, CreditCard, Check } from "lucide-react";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import PaymentConfirmation from "./PaymentConfirmation";
 
 const AdminPayments = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<any>(null);
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
+  const [monthFilter, setMonthFilter] = useState('all');
   
   const payments = [
     {
@@ -69,11 +73,13 @@ const AdminPayments = () => {
     }
   ];
 
-  const filteredPayments = payments.filter(payment =>
-    payment.studentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    payment.roomNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    payment.month.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredPayments = payments.filter(payment => {
+    const matchesSearch = payment.studentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         payment.roomNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         payment.month.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesMonth = monthFilter === 'all' || payment.month.toLowerCase().includes(monthFilter);
+    return matchesSearch && matchesMonth;
+  });
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -98,6 +104,18 @@ const AdminPayments = () => {
     toast({
       title: "Receipt Downloaded",
       description: `Receipt for ${payment.studentName} has been downloaded.`,
+    });
+  };
+
+  const handleConfirmPayment = (payment: any) => {
+    setSelectedPayment(payment);
+    setConfirmationOpen(true);
+  };
+
+  const handlePaymentConfirmed = (paymentData: any) => {
+    toast({
+      title: "Payment Confirmed",
+      description: `Payment for ${paymentData.studentName} has been confirmed and marked as paid.`,
     });
   };
 
@@ -167,17 +185,31 @@ const AdminPayments = () => {
         </Card>
       </div>
 
-      {/* Search */}
+      {/* Search and Filters */}
       <Card className="border-2 border-secondary/20">
         <CardContent className="p-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input
-              placeholder="Search payments by student name, room number, or month..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 border-primary/30"
-            />
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                placeholder="Search payments by student name, room number, or month..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 border-primary/30"
+              />
+            </div>
+            <Select value={monthFilter} onValueChange={setMonthFilter}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Filter by month" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Months</SelectItem>
+                <SelectItem value="january">January 2024</SelectItem>
+                <SelectItem value="february">February 2024</SelectItem>
+                <SelectItem value="march">March 2024</SelectItem>
+                <SelectItem value="december">December 2023</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </CardContent>
       </Card>
@@ -228,6 +260,17 @@ const AdminPayments = () => {
                       >
                         <Download className="h-4 w-4 mr-1" />
                         Receipt
+                      </Button>
+                    )}
+                    {(payment.status === 'pending' || payment.status === 'overdue') && (
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="border-success text-success hover:bg-success/10"
+                        onClick={() => handleConfirmPayment(payment)}
+                      >
+                        <Check className="h-4 w-4 mr-1" />
+                        Confirm
                       </Button>
                     )}
                     <Button 
@@ -385,6 +428,14 @@ const AdminPayments = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Payment Confirmation Dialog */}
+      <PaymentConfirmation 
+        open={confirmationOpen}
+        onClose={() => setConfirmationOpen(false)}
+        payment={selectedPayment}
+        onConfirm={handlePaymentConfirmed}
+      />
     </div>
   );
 };

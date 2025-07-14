@@ -1,4 +1,4 @@
-import { Home, CreditCard, MessageSquare, User, Menu, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
+import { Home, CreditCard, MessageSquare, User, Menu, LogOut, ChevronLeft, ChevronRight, Bell } from "lucide-react";
 import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -117,6 +117,12 @@ const StudentLayout = ({ user, onLogout }: StudentLayoutProps) => {
             <div className="relative flex flex-1"></div>
             <div className="flex items-center gap-x-4 lg:gap-x-6">
               <div className="hidden lg:block lg:h-6 lg:w-px lg:bg-border" />
+              
+              {/* Notification Icon */}
+              <Button variant="ghost" size="icon" className="relative">
+                <Bell className="h-5 w-5" />
+                <span className="absolute top-0 right-0 h-2 w-2 bg-danger rounded-full"></span>
+              </Button>
               
               {/* Profile Dropdown */}
               <DropdownMenu>

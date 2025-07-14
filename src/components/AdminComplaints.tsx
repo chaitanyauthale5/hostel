@@ -7,14 +7,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MessageSquare, Search, Clock, CheckCircle, AlertTriangle, Calendar, User, Reply } from "lucide-react";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const AdminComplaints = () => {
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedComplaint, setSelectedComplaint] = useState<number | null>(null);
   const [response, setResponse] = useState('');
   const [newStatus, setNewStatus] = useState('');
-  
-  const complaints = [
+  const [complaints, setComplaints] = useState([
     {
       id: 1,
       title: 'AC not working in room',
@@ -71,7 +72,7 @@ const AdminComplaints = () => {
       responseDate: null,
       assignedTo: null
     }
-  ];
+  ]);
 
   const filteredComplaints = complaints.filter(complaint =>
     complaint.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -113,7 +114,23 @@ const AdminComplaints = () => {
   const resolvedComplaints = complaints.filter(c => c.status === 'resolved').length;
 
   const handleRespond = (complaintId: number) => {
-    console.log('Responding to complaint:', complaintId, response, newStatus);
+    setComplaints(complaints.map(complaint => 
+      complaint.id === complaintId 
+        ? {
+            ...complaint,
+            status: newStatus || complaint.status,
+            response: response,
+            responseDate: new Date().toISOString().split('T')[0],
+            assignedTo: 'Admin Team'
+          }
+        : complaint
+    ));
+    
+    toast({
+      title: "Response Sent",
+      description: "Your response has been sent to the student successfully.",
+    });
+    
     setSelectedComplaint(null);
     setResponse('');
     setNewStatus('');
