@@ -5,9 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { IndianRupee, Search, Download, Eye, Calendar, TrendingUp, Users, CreditCard } from "lucide-react";
 import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 
 const AdminPayments = () => {
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState<any>(null);
   
   const payments = [
     {
@@ -83,6 +88,18 @@ const AdminPayments = () => {
   const pendingAmount = payments.filter(p => p.status !== 'paid').reduce((sum, p) => sum + p.amount + p.lateFee, 0);
   const totalStudents = payments.length;
   const paidCount = payments.filter(p => p.status === 'paid').length;
+  
+  const handleViewDetails = (payment: any) => {
+    setSelectedPayment(payment);
+    setDetailsDialogOpen(true);
+  };
+  
+  const handleDownloadReceipt = (payment: any) => {
+    toast({
+      title: "Receipt Downloaded",
+      description: `Receipt for ${payment.studentName} has been downloaded.`,
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -203,12 +220,22 @@ const AdminPayments = () => {
                       {payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
                     </Badge>
                     {payment.status === 'paid' && (
-                      <Button size="sm" variant="outline" className="border-success text-success hover:bg-success/10">
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="border-success text-success hover:bg-success/10"
+                        onClick={() => handleDownloadReceipt(payment)}
+                      >
                         <Download className="h-4 w-4 mr-1" />
                         Receipt
                       </Button>
                     )}
-                    <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary/10">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="border-primary text-primary hover:bg-primary/10"
+                      onClick={() => handleViewDetails(payment)}
+                    >
                       <Eye className="h-4 w-4 mr-1" />
                       Details
                     </Button>
@@ -246,6 +273,118 @@ const AdminPayments = () => {
           </Card>
         ))}
       </div>
+
+      {/* Payment Details Dialog */}
+      <Dialog open={detailsDialogOpen} onOpenChange={setDetailsDialogOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center">
+              <Eye className="h-5 w-5 mr-2" />
+              Payment Details
+            </DialogTitle>
+          </DialogHeader>
+          {selectedPayment && (
+            <div className="space-y-6">
+              {/* Student Information */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h3 className="font-semibold text-lg mb-2">Student Information</h3>
+                  <div className="space-y-2 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">Name:</span>
+                      <p className="font-medium">{selectedPayment.studentName}</p>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Room Number:</span>
+                      <p className="font-medium">{selectedPayment.roomNumber}</p>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg mb-2">Payment Information</h3>
+                  <div className="space-y-2 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">Month:</span>
+                      <p className="font-medium">{selectedPayment.month}</p>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Amount:</span>
+                      <p className="font-medium text-primary">₹{selectedPayment.amount.toLocaleString()}</p>
+                    </div>
+                    {selectedPayment.lateFee > 0 && (
+                      <div>
+                        <span className="text-muted-foreground">Late Fee:</span>
+                        <p className="font-medium text-danger">₹{selectedPayment.lateFee}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Payment Status and Timeline */}
+              <div>
+                <h3 className="font-semibold text-lg mb-2">Status & Timeline</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Status:</span>
+                    <Badge className={`ml-2 ${getStatusColor(selectedPayment.status)}`}>
+                      {selectedPayment.status.charAt(0).toUpperCase() + selectedPayment.status.slice(1)}
+                    </Badge>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Due Date:</span>
+                    <p className="font-medium">{selectedPayment.dueDate}</p>
+                  </div>
+                  {selectedPayment.paymentDate && (
+                    <div>
+                      <span className="text-muted-foreground">Payment Date:</span>
+                      <p className="font-medium">{selectedPayment.paymentDate}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Transaction Details (for paid payments) */}
+              {selectedPayment.status === 'paid' && (
+                <div>
+                  <h3 className="font-semibold text-lg mb-2">Transaction Details</h3>
+                  <div className="bg-success/10 p-4 rounded-lg space-y-2 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">Payment Method:</span>
+                      <p className="font-medium">{selectedPayment.method}</p>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Transaction ID:</span>
+                      <p className="font-medium font-mono">{selectedPayment.transactionId}</p>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Total Amount Paid:</span>
+                      <p className="font-bold text-success">₹{(selectedPayment.amount + selectedPayment.lateFee).toLocaleString()}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Actions */}
+              <div className="flex justify-end space-x-2 pt-4 border-t">
+                {selectedPayment.status === 'paid' && (
+                  <Button 
+                    variant="outline" 
+                    className="border-success text-success hover:bg-success/10"
+                    onClick={() => handleDownloadReceipt(selectedPayment)}
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Receipt
+                  </Button>
+                )}
+                <Button variant="outline" onClick={() => setDetailsDialogOpen(false)}>
+                  Close
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

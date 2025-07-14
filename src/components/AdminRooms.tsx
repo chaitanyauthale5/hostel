@@ -20,6 +20,17 @@ const AdminRooms = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editingRoom, setEditingRoom] = useState<any>(null);
   
+  // Students data for selection
+  const [students] = useState([
+    { id: 1, name: 'John Smith', email: 'john.smith@email.com', roomNumber: 'A-101' },
+    { id: 2, name: 'Mike Johnson', email: 'mike.johnson@email.com', roomNumber: 'A-101' },
+    { id: 3, name: 'Priya Sharma', email: 'priya.sharma@email.com', roomNumber: 'B-201' },
+    { id: 4, name: 'Ahmed Khan', email: 'ahmed.khan@email.com', roomNumber: null },
+    { id: 5, name: 'Sneha Patel', email: 'sneha.patel@email.com', roomNumber: null },
+    { id: 6, name: 'Raj Kumar', email: 'raj.kumar@email.com', roomNumber: null },
+    { id: 7, name: 'Lisa Wong', email: 'lisa.wong@email.com', roomNumber: null }
+  ]);
+  
   const [rooms, setRooms] = useState([
     {
       id: 1,
@@ -536,6 +547,59 @@ const AdminRooms = () => {
                   </Select>
                 </div>
               </div>
+              
+              {/* Student Assignment Section */}
+              <div className="space-y-4 border-t pt-4">
+                <Label className="text-lg font-medium">Assign Students</Label>
+                <div className="space-y-2">
+                  <Label>Available Students</Label>
+                  <div className="border rounded-lg p-3 max-h-32 overflow-y-auto">
+                    {students.filter(s => !s.roomNumber || s.roomNumber === editingRoom.roomNumber).map(student => (
+                      <div key={student.id} className="flex items-center space-x-2 py-1">
+                        <input
+                          type="checkbox"
+                          id={`student-${student.id}`}
+                          checked={editingRoom.students?.includes(student.name) || false}
+                          onChange={(e) => {
+                            const isChecked = e.target.checked;
+                            const currentStudents = editingRoom.students || [];
+                            let newStudents;
+                            
+                            if (isChecked && currentStudents.length < editingRoom.capacity) {
+                              newStudents = [...currentStudents, student.name];
+                            } else if (!isChecked) {
+                              newStudents = currentStudents.filter((s: string) => s !== student.name);
+                            } else {
+                              toast({
+                                title: "Room Full",
+                                description: "This room has reached its maximum capacity.",
+                                variant: "destructive"
+                              });
+                              return;
+                            }
+                            
+                            setEditingRoom({
+                              ...editingRoom, 
+                              students: newStudents,
+                              occupancy: newStudents.length,
+                              status: newStudents.length === 0 ? 'available' : 
+                                     newStudents.length === editingRoom.capacity ? 'occupied' : 'partially_occupied'
+                            });
+                          }}
+                          className="rounded"
+                        />
+                        <label htmlFor={`student-${student.id}`} className="text-sm cursor-pointer">
+                          {student.name} ({student.email})
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Capacity: {editingRoom.occupancy || 0}/{editingRoom.capacity}
+                  </p>
+                </div>
+              </div>
+              
               <div className="flex justify-end space-x-2">
                 <Button variant="outline" onClick={() => setEditDialogOpen(false)}>
                   Cancel
