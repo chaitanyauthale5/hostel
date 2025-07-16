@@ -14,7 +14,202 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      complaints: {
+        Row: {
+          admin_response: string | null
+          category: string
+          created_at: string | null
+          description: string
+          id: string
+          priority: string | null
+          resolved_at: string | null
+          status: string | null
+          student_id: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          admin_response?: string | null
+          category: string
+          created_at?: string | null
+          description: string
+          id?: string
+          priority?: string | null
+          resolved_at?: string | null
+          status?: string | null
+          student_id?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          admin_response?: string | null
+          category?: string
+          created_at?: string | null
+          description?: string
+          id?: string
+          priority?: string | null
+          resolved_at?: string | null
+          status?: string | null
+          student_id?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "complaints_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string | null
+          due_date: string
+          extracted_text: string | null
+          id: string
+          late_fee: number | null
+          month: string
+          notes: string | null
+          payment_date: string | null
+          payment_method: string | null
+          room_number: string | null
+          status: string | null
+          student_id: string | null
+          transaction_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          due_date: string
+          extracted_text?: string | null
+          id?: string
+          late_fee?: number | null
+          month: string
+          notes?: string | null
+          payment_date?: string | null
+          payment_method?: string | null
+          room_number?: string | null
+          status?: string | null
+          student_id?: string | null
+          transaction_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          due_date?: string
+          extracted_text?: string | null
+          id?: string
+          late_fee?: number | null
+          month?: string
+          notes?: string | null
+          payment_date?: string | null
+          payment_method?: string | null
+          room_number?: string | null
+          status?: string | null
+          student_id?: string | null
+          transaction_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rooms: {
+        Row: {
+          capacity: number
+          created_at: string | null
+          current_occupancy: number | null
+          facilities: string[] | null
+          floor_number: number | null
+          id: string
+          is_available: boolean | null
+          monthly_rent: number
+          room_number: string
+          room_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          capacity: number
+          created_at?: string | null
+          current_occupancy?: number | null
+          facilities?: string[] | null
+          floor_number?: number | null
+          id?: string
+          is_available?: boolean | null
+          monthly_rent: number
+          room_number: string
+          room_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          capacity?: number
+          created_at?: string | null
+          current_occupancy?: number | null
+          facilities?: string[] | null
+          floor_number?: number | null
+          id?: string
+          is_available?: boolean | null
+          monthly_rent?: number
+          room_number?: string
+          room_type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      students: {
+        Row: {
+          admission_date: string | null
+          course: string | null
+          created_at: string | null
+          email: string
+          id: string
+          is_active: boolean | null
+          name: string
+          phone: string | null
+          room_number: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          admission_date?: string | null
+          course?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+          phone?: string | null
+          room_number?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          admission_date?: string | null
+          course?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          phone?: string | null
+          room_number?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

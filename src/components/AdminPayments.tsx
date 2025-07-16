@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { IndianRupee, Search, Download, Eye, Calendar, TrendingUp, Users, CreditCard, Check } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import PaymentConfirmation from "./PaymentConfirmation";
 
 const AdminPayments = () => {
@@ -123,9 +124,37 @@ const AdminPayments = () => {
     });
   };
 
-  const handleConfirmPayment = (payment: any) => {
-    setSelectedPayment(payment);
-    setConfirmationOpen(true);
+  const handleConfirmPayment = async (payment: any) => {
+    try {
+      // Update payment status in Supabase
+      const { error } = await supabase
+        .from('payments')
+        .update({ 
+          status: 'paid',
+          payment_date: new Date().toISOString().split('T')[0]
+        })
+        .eq('id', payment.id);
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to confirm payment. Please try again.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      toast({
+        title: "Payment Confirmed",
+        description: `Payment for ${payment.studentName} has been confirmed and marked as paid.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to confirm payment. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handlePaymentConfirmed = (paymentData: any) => {
